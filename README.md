@@ -1,17 +1,52 @@
 # Telltale
 
-__Statistics to improve your application performance__
+__Statistics that help you improve application performance.__
 
-_Telltale_ analyses current execution and provide you information about possible bottlenecks in your application.
-Output report is automatically sent to console of your browser.
-Currently it works only with [FirePHP](https://addons.mozilla.org/en-US/firefox/addon/firephp/).
+_Telltale_ analyses current execution and provides information about possible bottlenecks in your application. Output reports are automatically sent to console of your browser, such as:
+
+- Most time-consuming path;
+- Most time-consuming calls;
+- Most memory-consuming calls;
+- Memory peak.
 
 [![](https://github.com/renanbr/telltale/raw/master/docs/images/screenshot.png)]
+
+## Usage
+
+### Grabbing all code
+
+```php
+<?php
+
+// ignored execution in statistics
+
+$telltale = new \Telltale\Telltale();
+$telltale->start();
+
+// analysed
+```
+
+### Analysing a part of code
+
+```php
+<?php
+
+// ignored execution in statistics
+
+$telltale = new \Telltale\Telltale();
+$telltale->start();
+
+// analysed
+
+$telltale->stop();
+
+// ignored execution in statistics
+```
 
 ## Installation
 
 
-Add `renanbr/telltale` in your `composer.json` file (`require-dev` recommended). Run `composer update`. See more about [Composer](http://getcomposer.org/).
+Add `renanbr/telltale` to [`composer.json`](http://getcomposer.org/).
 
 ``` json
 {
@@ -21,49 +56,18 @@ Add `renanbr/telltale` in your `composer.json` file (`require-dev` recommended).
 }
 ```
 
-## Usage
-
-Grabbing all code.
-
-```php
-<?php
-
-// ignored code in statistics
-
-$telltale = new \Telltale\Telltale();
-$telltale->start();
-
-// code analysed till the end of execution
-```
-
-Analysing a part of code.
-
-```php
-<?php
-
-// ignored code in statistics
-
-$telltale = new \Telltale\Telltale();
-$telltale->start();
-
-// code analysed
-
-$telltale->stop();
-
-// ignored code in statistics
-```
-
 ## About
 
 ### Requirements
 
-- PHP 5.3+
-- [Xdebug](http://xdebug.org/) 2.1+
-- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/firebug/) with [Firebug](https://addons.mozilla.org/en-US/firefox/addon/firephp/) extension
+- [PHP](http://php.net) 5.3+
+- [Composer](http://getcomposer.org)
+- [Xdebug](http://xdebug.org/wizard.php) 2.1+
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/firebug/) and [Firebug](https://addons.mozilla.org/en-US/firefox/addon/firephp/)
 
 ### Contributing
 
-Bugs and feature request are tracked on [GitHub](https://github.com/renanbr/telltale/issues)
+Bugs and feature requests are tracked on [GitHub](https://github.com/renanbr/telltale/issues).
 
 ### Author
 
@@ -71,8 +75,8 @@ Renan de Lima - <renandelima@gmail.com>
 
 ### License
 
-Telltale is licensed under the MIT License - see the `LICENSE` file for details.
+_Telltale_ is licensed under the [MIT License](http://opensource.org/licenses/MIT). See the [LICENSE](https://github.com/renanbr/telltale/blob/master/LICENSE) file for details.
 
 ### Acknowledgements
 
-This library is inspired by [Derick Rethans](https://github.com/derickr)' [tracefile analyser](http://derickrethans.nl/xdebug-and-tracing-memory-usage.html) script.
+This library is inspired by [Derick Rethans](https://github.com/derickr)' [tracefile analyser script](http://derickrethans.nl/xdebug-and-tracing-memory-usage.html) and [ZendServer Code Tracing](https://www.zend.com/en/products/server/zend-server-code-tracing).
