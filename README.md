@@ -9,7 +9,7 @@ _Telltale_ analyses current execution and provides information about possible bo
 - Most memory-consuming calls;
 - Memory peak.
 
-[![](https://github.com/renanbr/telltale/raw/master/docs/images/screenshot/overview.png)]
+[![](https://github.com/renanbr/telltale/raw/master/docs/images/screenshot.png)]
 
 ## Usage
 
