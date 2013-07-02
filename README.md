@@ -2,12 +2,15 @@
 
 __Statistics that help you improve application performance.__
 
-_Telltale_ analyses current execution and provides information about possible bottlenecks in your application. Output reports are automatically sent to console of your browser, such as:
+_Telltale_ analyses current execution and provides information about possible bottlenecks in your application.
+Analyzes are executed by _agents_.
+Output reports are automatically sent to console of your browser.
+Default _agents_:
 
-- Most time-consuming path;
-- Most time-consuming calls;
-- Most memory-consuming calls;
-- Memory peak.
+- __MemoryPeakAgent__: top memory usage;
+- __CriticalPathAgent__: shows the most time-consuming path;
+- __SlowestCallsCallsAgent__: shows slowest calls;
+- __MemoryUsageCallsAgent__: shows top memory usage calls.
 
 <p align="center">
 ![](https://raw.github.com/renanbr/telltale/master/docs/images/screenshot/overview.png)
