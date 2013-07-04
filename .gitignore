@@ -1,0 +1,11 @@
+*~
+.DS_Store
+._*
+.~lock.*
+.settings
+.buildpath
+.project
+cache.properties
+.idea
+nbproject
+vendor

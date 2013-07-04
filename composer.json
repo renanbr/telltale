@@ -1,0 +1,22 @@
+{
+    "name" : "renanbr/telltale",
+    "description" : "Statistics that help you improve application performance",
+    "keywords" : ["tool", "statistics", "performance"],
+    "homepage" : "https://github.com/renanbr/telltale",
+    "type" : "library",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Renan de Lima",
+            "email" : "renandelima@gmail.com"
+        }
+    ],
+    "require" : {
+        "php" : ">=5.3.0",
+        "ext-xdebug" : "~2.1",
+        "monolog/monolog" : ">=1.3.0"
+    },
+    "autoload" : {
+        "psr-0" : {"Telltale" : "src/"}
+    }
+}
