@@ -27,9 +27,8 @@ class MemoryPeakAgent extends AbstractAgent
      */
     public function start()
     {
-        if (!$this->traceFile) {
-            $this->traceFile = TraceManager::start();
-        }
+        parent::start();
+        $this->traceFile = TraceManager::start();
     }
 
     /**
@@ -37,6 +36,7 @@ class MemoryPeakAgent extends AbstractAgent
      */
     public function stop()
     {
+        parent::stop();
         TraceManager::stop();
     }
 
@@ -45,9 +45,7 @@ class MemoryPeakAgent extends AbstractAgent
      */
     public function analyse()
     {
-        if (!$this->traceFile) {
-            return;
-        }
+        parent::analyse();
 
         list($peak, $call, $file, $line) = $this->parse();
         if ($peak < 0) {

@@ -14,6 +14,54 @@ namespace Telltale\Agent;
 abstract class AbstractAgent implements AgentInterface
 {
     /**
+     * @var boolean
+     */
+    protected $started = false;
+
+    /**
+     * @var boolean
+     */
+    protected $stopped = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function start()
+    {
+        if ($this->started) {
+            throw new \RuntimeException('Telltale Agent can not be started twice.');
+        }
+        $this->started = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function stop()
+    {
+        if (!$this->started) {
+            throw new \RuntimeException('Telltale Agent was not started.');
+        }
+        if ($this->stopped) {
+            throw new \RuntimeException('Telltale Agent is already stopped.');
+        }
+        $this->stopped = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function analyse()
+    {
+        if (!$this->started) {
+            throw new \RuntimeException('Telltale Agent was not started.');
+        }
+        if (!$this->stopped) {
+            $this->stop();
+        }
+    }
+
+    /**
      * @param integer $bytes
      * @return string
      */
@@ -32,7 +80,7 @@ abstract class AbstractAgent implements AgentInterface
     }
 
     /**
-     * @param integer $seconds
+     * @param float $seconds
      * @return string
      */
     protected static function formatTime($seconds)

@@ -39,9 +39,8 @@ class CriticalPathAgent extends AbstractAgent
      */
     public function start()
     {
-        if (!$this->traceFile) {
-            $this->traceFile = TraceManager::start();
-        }
+        parent::start();
+        $this->traceFile = TraceManager::start();
     }
 
     /**
@@ -49,6 +48,7 @@ class CriticalPathAgent extends AbstractAgent
      */
     public function stop()
     {
+        parent::stop();
         TraceManager::stop();
     }
 
@@ -57,9 +57,7 @@ class CriticalPathAgent extends AbstractAgent
      */
     public function analyse()
     {
-        if (!$this->traceFile) {
-            return;
-        }
+        parent::analyse();
 
         $this->parse();
         $critical = array();
