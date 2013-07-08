@@ -34,11 +34,6 @@ class Telltale
      */
     protected $stopped = false;
 
-    public function __construct()
-    {
-        $this->setupDefaultAgents();
-    }
-
     public function __destruct()
     {
         if ($this->started && !$this->stopped) {
@@ -101,13 +96,5 @@ class Telltale
         }
 
         return array_shift($this->agents);
-    }
-
-    protected function setupDefaultAgents()
-    {
-        $this->pushAgent(new MemoryUsageCallsAgent())
-            ->pushAgent(new SlowestCallsAgent())
-            ->pushAgent(new CriticalPathAgent())
-            ->pushAgent(new MemoryPeakAgent());
     }
 }

@@ -17,44 +17,49 @@ reports are automatically sent to console of your browser. Default _agents_:
 
 ## Usage
 
-### Grabbing all code
-
 ```php
 <?php
 
-// ignored execution in statistics
+use Telltale\Telltale;
+use Telltale\Agent\MemoryPeakAgent;
+use Telltale\Agent\CriticalPathAgent;
+use Telltale\Agent\SlowestCallsAgent;
+use Telltale\Agent\MemoryUsageCallsAgent;
 
-$telltale = new \Telltale\Telltale();
+// create an analyser
+$telltale = new Telltale();
+$telltale->pushAgent(new MemoryPeakAgent());
+$telltale->pushAgent(new CriticalPathAgent());
+$telltale->pushAgent(new SlowestCallsAgent());
+$telltale->pushAgent(new MemoryUsageCallsAgent());
+
+// start watching
 $telltale->start();
 
-// analysed
 ```
 
-### Analysing a part of code
+Analysing a part of code:
 
 ```php
 <?php
-
-// ignored execution in statistics
-
-$telltale = new \Telltale\Telltale();
+// ignored
 $telltale->start();
-
 // analysed
-
 $telltale->stop();
-
-// ignored execution in statistics
+// ignored
 ```
 
 ## Installation
 
+Installation of this module uses [Composer](http://getcomposer.org/).
 
-Add `renanbr/telltale` to [`composer.json`](http://getcomposer.org/).
-
+```sh
+php composer.phar require renanbr/telltale:dev-master
+```
+or add `renanbr/telltale` to `composer.json` manually
 ``` json
 {
-    "require-dev": {
+    "require": {
         "renanbr/telltale": "dev-master"
     }
 }

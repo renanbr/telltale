@@ -1,5 +1,11 @@
 <?php
 
+use Telltale\Telltale;
+use Telltale\Agent\MemoryPeakAgent;
+use Telltale\Agent\CriticalPathAgent;
+use Telltale\Agent\SlowestCallsAgent;
+use Telltale\Agent\MemoryUsageCallsAgent;
+
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('date.timezone', 'UTC');
@@ -13,7 +19,11 @@ $loader = require $root . '/vendor/autoload.php';
 $loader->set($root . '/src', 'Telltale');
 
 // setup
-$telltale = new \Telltale\Telltale();
+$telltale = new Telltale();
+$telltale->pushAgent(new MemoryPeakAgent());
+$telltale->pushAgent(new CriticalPathAgent());
+$telltale->pushAgent(new SlowestCallsAgent());
+$telltale->pushAgent(new MemoryUsageCallsAgent());
 $telltale->start();
 
 // ----- some functions
