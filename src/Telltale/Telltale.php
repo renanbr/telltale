@@ -12,10 +12,6 @@
 namespace Telltale;
 
 use Telltale\Agent\AgentInterface;
-use Telltale\Agent\MemoryPeakAgent;
-use Telltale\Agent\CriticalPathAgent;
-use Telltale\Agent\SlowestCallsAgent;
-use Telltale\Agent\MemoryUsageCallsAgent;
 
 class Telltale
 {
