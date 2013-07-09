@@ -19,15 +19,21 @@ abstract class TraceManager
     protected static $file;
 
     /**
-     * @return string File path to trace file
+     * Returns the name of the file which is used to trace.
+     *
+     * @return string
      */
     public static function start()
     {
         if (!self::$file) {
-            self::$file = tempnam(sys_get_temp_dir(), 'telltale');
-            xdebug_start_trace(self::$file, \XDEBUG_TRACE_COMPUTERIZED);
+            if (xdebug_get_tracefile_name()) {
+                throw new \RuntimeException('Can not start tracing, it has already been started.');
+            }
+            $file = tempnam(sys_get_temp_dir(), 'telltale');
+            xdebug_start_trace($file, \XDEBUG_TRACE_COMPUTERIZED);
+            self::$file = $file . '.xt';
         }
-        return self::$file . '.xt';
+        return self::$file;
     }
 
     public static function stop()

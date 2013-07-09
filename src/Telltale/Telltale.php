@@ -16,6 +16,13 @@ use Telltale\Agent\AgentInterface;
 class Telltale
 {
     /**
+     * Pointer to current instance running.
+     *
+     * @var Telltale
+     */
+    protected static $running;
+
+    /**
      * @var AgentInterface[]
      */
     protected $agents = array();
@@ -42,9 +49,16 @@ class Telltale
      */
     public function start()
     {
-        if ($this->started) {
-            throw new \RuntimeException('Telltale can not be started twice.');
+        // check if can start
+        if (self::$running && self::$running !== $this) {
+            throw new \RuntimeException('There is another Telltale instance running.');
         }
+        if ($this->started) {
+            throw new \RuntimeException('Telltale instance can not be started twice.');
+        }
+
+        // start agents
+        self::$running = $this;
         $this->started = true;
         foreach ($this->agents as $agent) {
             $agent->start();
@@ -56,16 +70,22 @@ class Telltale
      */
     public function stop()
     {
+        // check if can stop
         if (!$this->started) {
-            throw new \RuntimeException('Telltale was not started.');
+            throw new \RuntimeException('Telltale instance was not started.');
         }
         if ($this->stopped) {
-            throw new \RuntimeException('Telltale is already stopped.');
+            throw new \RuntimeException('Telltale instance is already stopped.');
         }
+
+        // stop agents
         $this->stopped = true;
         foreach ($this->agents as $agent) {
             $agent->stop();
         }
+
+        // analyse
+        self::$running = null;
         foreach ($this->agents as $agent) {
             $agent->analyse();
         }
