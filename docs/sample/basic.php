@@ -13,10 +13,8 @@ ini_set('date.timezone', 'UTC');
 // output buffer must be turned on
 ob_start();
 
-// autoload setup
-$root = dirname(dirname(dirname(__FILE__)));
-$loader = require $root . '/vendor/autoload.php';
-$loader->set($root . '/src', 'Telltale');
+// autoload
+require dirname(dirname(dirname(__FILE__))) . '/vendor/autoload.php';
 
 // setup
 $telltale = new Telltale();
