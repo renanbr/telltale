@@ -23,9 +23,6 @@ abstract class TraceManager
      */
     public static function start()
     {
-        if (!xdebug_is_enabled()) {
-            xdebug_enable();
-        }
         if (!self::$file) {
             self::$file = tempnam(sys_get_temp_dir(), 'telltale');
             xdebug_start_trace(self::$file, \XDEBUG_TRACE_COMPUTERIZED);
