@@ -12,7 +12,7 @@
 namespace Telltale\Report;
 
 use Monolog\Logger;
-use Monolog\Handler\FirePHPHandler;
+use Telltale\Util\Monolog\Handler\FirePhpHandler;
 use Telltale\Util\Monolog\Formatter\WildfireTableFormatter;
 
 class TableReport implements ReportInterface
@@ -68,7 +68,7 @@ class TableReport implements ReportInterface
         if (!static::$firePhpLogger) {
             $logger = new Logger('Telltale');
 
-            $firePhpHandler = new FirePHPHandler();
+            $firePhpHandler = new FirePhpHandler();
             $firePhpHandler->setFormatter(new WildfireTableFormatter());
             $logger->pushHandler($firePhpHandler);
 

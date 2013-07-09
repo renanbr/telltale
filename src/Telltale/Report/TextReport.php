@@ -12,7 +12,7 @@
 namespace Telltale\Report;
 
 use Monolog\Logger;
-use Monolog\Handler\FirePHPHandler;
+use Telltale\Util\Monolog\Handler\FirePhpHandler;
 use Monolog\Handler\ChromePHPHandler;
 
 class TextReport implements ReportInterface
@@ -44,7 +44,7 @@ class TextReport implements ReportInterface
     {
         if (!static::$logger) {
             $logger = new Logger('Telltale');
-            $logger->pushHandler(new FirePHPHandler());
+            $logger->pushHandler(new FirePhpHandler());
             $logger->pushHandler(new ChromePHPHandler());
             static::$logger = $logger;
         }
