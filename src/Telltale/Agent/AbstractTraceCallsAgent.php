@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Telltale\Util\Xdebug;
+namespace Telltale\Agent;
+
+use Telltale\Util\Xdebug\TraceFile;
 
 /**
+ * Provides file trace parser and statistics grouped by function.
+ *
  * This implementation is a copy from
  * https://github.com/xdebug/xdebug/blob/master/contrib/tracefile-analyser.php
  */
-class TraceParser
+abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
 {
-    /**
-     * @var string
-     */
-    protected $file = null;
-
     /**
      * Stores the last call, time and memory for the entry point per
      * stack depth.
@@ -71,95 +70,36 @@ class TraceParser
     protected $ignoring = 0;
 
     /**
-     * @var TraceParser[]
-     */
-    protected static $instances = array();
-
-    /**
-     * @param string $file
-     */
-    public function __construct($file)
-    {
-        $this->file = $file;
-    }
-
-    /**
-     * @param string $file
-     * @return TraceParser
-     */
-    public static function factory($file)
-    {
-        if (!isset(self::$instances[$file])) {
-            self::$instances[$file] = new self($file);
-        }
-
-        return self::$instances[$file];
-    }
-
-    /**
-     * @param string $file
-     * @throws \RuntimeException
-     */
-    public static function validateFile($file)
-    {
-        $handle = fopen($file, 'r');
-        if (!$handle) {
-            throw new \RuntimeException("Can't open '$file'.");
-        }
-
-        $header1 = fgets($handle, 4096);
-        $header2 = fgets($handle, 4096);
-        fclose($handle);
-
-        if (!preg_match('@Version: 2.*@', $header1) ||
-        !preg_match('@File format: 2@', $header2)
-        ) {
-            throw new \RuntimeException("File '$file' is not an Xdebug trace file made with format option '1'.");
-        }
-    }
-
-    /**
-     * @param string $sortKey
+     * @param string $key
      * @return array
      */
-    public function getCalls($sortKey = null)
+    protected function getSortedCalls($key)
     {
         $result = $this->calls;
-        if ($sortKey !== null) {
-            uasort(
-                $result,
-                function($a, $b) use ($sortKey) {
-                    return ($a[$sortKey] > $b[$sortKey]) ? -1 : ($a[$sortKey] < $b[$sortKey] ? 1 : 0);
-                }
-            );
-        }
+        uasort(
+            $result,
+            function ($call1, $call2) use ($key) {
+                $val1 = $call1[$key];
+                $val2 = $call2[$key];
+                return $val1 > $val2 ? -1 : (int) $val1 < $val2;
+            }
+        );
 
         return $result;
     }
 
-    public function parse()
+    protected function parse()
     {
-        if ($this->calls) {
-            return;
-        }
-
-        // reset stack
-        $this->stack = array();
-        static::validateFile($this->file);
-        $handle = fopen($this->file, 'r');
+        $handle = TraceFile::open($this->traceFile);
         while (!feof($handle)) {
             $line = fgets($handle, 4096);
             $parts = explode("\t", trim($line));
-            if (count($parts) < 5) {
-                continue;
-            }
-
-            $isEntry = '0' == $parts[2];
-            $isExit = '1' == $parts[2];
-            if ($isEntry) {
-                $this->parseEntryLine($parts);
-            } else if ($isExit) {
-                $this->parseExitLine($parts);
+            if (count($parts) >= 5) {
+                if ('0' == $parts[2]) {
+                    $this->parseEntry($parts);
+                } elseif ('1' == $parts[2]) {
+                    $this->parseExit($parts);
+                }
             }
         }
         fclose($handle);
@@ -174,7 +114,7 @@ class TraceParser
     /**
      * @param array $parts
      */
-    protected function parseEntryLine(array $parts)
+    protected function parseEntry(array $parts)
     {
         // basic data
         $depth = $parts[0];
@@ -208,7 +148,7 @@ class TraceParser
     /**
      * @param array $parts
      */
-    protected function parseExitLine(array $parts)
+    protected function parseExit(array $parts)
     {
         // basic data
         $depth = $parts[0];
@@ -230,7 +170,7 @@ class TraceParser
         if (0 == $this->ignoring) {
             // make sure it is not a phantom call, see normalizeStacks()
             if ('' != $entry['name']) {
-                $this->addToCall($entry);
+                $this->saveCall($entry);
             }
         }
 
@@ -283,7 +223,7 @@ class TraceParser
     /**
      * @param array $entry
      */
-    protected function addToCall(array $entry)
+    protected function saveCall(array $entry)
     {
         $name = $entry['name'];
         if (!isset($this->calls[$name])) {

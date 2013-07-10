@@ -11,7 +11,7 @@
 
 namespace Telltale\Util\Xdebug;
 
-abstract class TraceManager
+class TraceManager
 {
     /**
      * @var string
@@ -23,24 +23,24 @@ abstract class TraceManager
      *
      * @return string
      */
-    public static function start()
+    public function start()
     {
-        if (!self::$file) {
+        if (!static::$file) {
             if (xdebug_get_tracefile_name()) {
                 throw new \RuntimeException('Can not start tracing, it has already been started.');
             }
             $file = tempnam(sys_get_temp_dir(), 'telltale');
             xdebug_start_trace($file, \XDEBUG_TRACE_COMPUTERIZED);
-            self::$file = $file . '.xt';
+            static::$file = $file . '.xt';
         }
-        return self::$file;
+        return static::$file;
     }
 
-    public static function stop()
+    public function stop()
     {
-        if (self::$file) {
+        if (static::$file) {
             xdebug_stop_trace();
-            self::$file = null;
+            static::$file = null;
         }
     }
 }

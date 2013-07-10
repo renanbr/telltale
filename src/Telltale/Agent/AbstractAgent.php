@@ -11,6 +11,9 @@
 
 namespace Telltale\Agent;
 
+/**
+ * Provides synchronization among start(), stop() and analyse() methods.
+ */
 abstract class AbstractAgent implements AgentInterface
 {
     /**
@@ -59,40 +62,5 @@ abstract class AbstractAgent implements AgentInterface
         if (!$this->stopped) {
             $this->stop();
         }
-    }
-
-    /**
-     * @param integer $bytes
-     * @return string
-     */
-    protected static function formatBytes($bytes)
-    {
-        $factor = $bytes < 0 ? -1 : 1;
-        $value = abs($bytes);
-        $prefixes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-        foreach ($prefixes as $prefix) {
-            if ($value < 1024) {
-                break;
-            }
-            $value /= 1024;
-        }
-        return number_format($value * $factor, 2) . ' ' . $prefix;
-    }
-
-    /**
-     * @param float $seconds
-     * @return string
-     */
-    protected static function formatTime($seconds)
-    {
-        $factor = $seconds < 0 ? -1 : 1;
-        $value = abs($seconds);
-        if ($value < 0.1) {
-            $value *= 1000;
-            $prefix = 'ms';
-        } else {
-            $prefix = 's';
-        }
-        return number_format($value * $factor, 3) . ' ' . $prefix;
     }
 }

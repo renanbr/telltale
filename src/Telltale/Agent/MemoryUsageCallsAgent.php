@@ -11,35 +11,11 @@
 
 namespace Telltale\Agent;
 
-use Telltale\Util\Xdebug\TraceManager;
-use Telltale\Util\Xdebug\TraceParser;
 use Telltale\Report\TableReport;
+use Telltale\Util\Format;
 
-class MemoryUsageCallsAgent extends AbstractAgent
+class MemoryUsageCallsAgent extends AbstractTraceCallsAgent
 {
-    /**
-     * @var string
-     */
-    protected $traceFile;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function start()
-    {
-        parent::start();
-        $this->traceFile = TraceManager::start();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function stop()
-    {
-        parent::stop();
-        TraceManager::stop();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -47,9 +23,8 @@ class MemoryUsageCallsAgent extends AbstractAgent
     {
         parent::analyse();
 
-        $parser = TraceParser::factory($this->traceFile);
-        $parser->parse();
-        $calls = array_slice($parser->getCalls('memory-own'), 0, 5);
+        $this->parse();
+        $calls = array_slice($this->getSortedCalls('memory-own'), 0, 5);
 
         $report = new TableReport();
         $report->setTitle('Top memory usage calls');
@@ -70,14 +45,14 @@ class MemoryUsageCallsAgent extends AbstractAgent
                 $inclusive = '-';
             } else {
                 $type = 'user defined';
-                $inclusive = static::formatBytes($call['memory-inclusive']);
+                $inclusive = Format::bytes($call['memory-inclusive']);
             }
             $report->addRow(
                 array(
                     (string) $position++,
                     $name . '()',
                     (string) $call['times'],
-                    static::formatBytes($call['memory-own']),
+                    Format::bytes($call['memory-own']),
                     $inclusive,
                     $type
                 )

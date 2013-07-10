@@ -11,46 +11,23 @@
 
 namespace Telltale\Agent;
 
-use Telltale\Util\Xdebug\TraceManager;
-use Telltale\Util\Xdebug\TraceParser;
 use Telltale\Report\TableReport;
+use Telltale\Util\Xdebug\TraceFile;
+use Telltale\Util\Format;
 
-class CriticalPathAgent extends AbstractAgent
+class CriticalPathAgent extends AbstractTraceAgent
 {
-    /**
-     * @var string
-     */
-    protected $traceFile;
-
     /**
      * @var array
      */
     protected $tree = array();
 
     /**
-     * Pointer to current
+     * Pointer to current call.
      *
      * @var array
      */
     protected $current;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function start()
-    {
-        parent::start();
-        $this->traceFile = TraceManager::start();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function stop()
-    {
-        parent::stop();
-        TraceManager::stop();
-    }
 
     /**
      * {@inheritdoc}
@@ -60,15 +37,13 @@ class CriticalPathAgent extends AbstractAgent
         parent::analyse();
 
         $this->parse();
+
         $critical = array();
         $this->extract($this->tree, $critical);
-        if (!$critical) {
-            return;
-        }
 
         $report = new TableReport();
         $root = reset($critical);
-        $time = static::formatTime($root['time']);
+        $time = Format::time($root['time']);
         $report->setTitle("Critical path ($time)");
         $report->addRow(
             array(
@@ -88,8 +63,8 @@ class CriticalPathAgent extends AbstractAgent
                 array(
                     (string) $position,
                     $name,
-                    static::formatTime($call['time']),
-                    static::formatBytes($call['memory']),
+                    Format::time($call['time']),
+                    Format::bytes($call['memory']),
                     $call['file'],
                     $call['line'],
                     $type
@@ -129,36 +104,19 @@ class CriticalPathAgent extends AbstractAgent
 
     protected function parse()
     {
-        TraceParser::validateFile($this->traceFile);
-        $handle = fopen($this->traceFile, 'r');
+        $handle = TraceFile::open($this->traceFile);
         while (!feof($handle)) {
-            // check line
             $line = fgets($handle, 4096);
             $parts = explode("\t", trim($line));
-            if (count($parts) < 5) {
-                continue;
-            }
-
-            // parse by type
-            if ('0' == $parts[2]) {
-                $this->parseEntry($parts);
-            } else if ('1' == $parts[2]) {
-                $this->parseExit($parts);
+            if (count($parts) >= 5) {
+                if ('0' == $parts[2]) {
+                    $this->parseEntry($parts);
+                } elseif ('1' == $parts[2]) {
+                    $this->parseExit($parts);
+                }
             }
         }
         fclose($handle);
-    }
-
-    /**
-     * @param array $parts
-     */
-    protected function parseExit(array $parts)
-    {
-        if ($this->current) {
-            $this->current['time'] = $parts[3] - $this->current['time-start'];
-            $this->current['memory'] = $parts[4];
-            $this->current = &$this->current['parent'];
-        }
     }
 
     /**
@@ -189,5 +147,17 @@ class CriticalPathAgent extends AbstractAgent
         }
 
         $this->current = &$entry;
+    }
+
+    /**
+     * @param array $parts
+     */
+    protected function parseExit(array $parts)
+    {
+        if ($this->current) {
+            $this->current['time'] = $parts[3] - $this->current['time-start'];
+            $this->current['memory'] = $parts[4];
+            $this->current = &$this->current['parent'];
+        }
     }
 }

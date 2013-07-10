@@ -11,35 +11,12 @@
 
 namespace Telltale\Agent;
 
-use Telltale\Util\Xdebug\TraceManager;
-use Telltale\Util\Xdebug\TraceParser;
 use Telltale\Report\TextReport;
+use Telltale\Util\Xdebug\TraceFile;
+use Telltale\Util\Format;
 
-class MemoryPeakAgent extends AbstractAgent
+class MemoryPeakAgent extends AbstractTraceAgent
 {
-    /**
-     * @var string
-     */
-    protected $traceFile;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function start()
-    {
-        parent::start();
-        $this->traceFile = TraceManager::start();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function stop()
-    {
-        parent::stop();
-        TraceManager::stop();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -48,10 +25,8 @@ class MemoryPeakAgent extends AbstractAgent
         parent::analyse();
 
         list($peak, $call, $file, $line) = $this->parse();
-        if ($peak < 0) {
-            return;
-        }
-        $memory = static::formatBytes($peak);
+
+        $memory = Format::bytes($peak);
         $details = null;
         if ($call) {
             $details = ' at ' . $call . '() in ' . $file . ' on line ' . $line;
@@ -67,13 +42,12 @@ class MemoryPeakAgent extends AbstractAgent
      */
     protected function parse()
     {
-        TraceParser::validateFile($this->traceFile);
         $peak = -1;
         $call = null;
         $file = null;
         $line = null;
         $entries = array();
-        $handle = fopen($this->traceFile, 'r');
+        $handle = TraceFile::open($this->traceFile);
         while (!feof($handle)) {
             // check line
             $buffer = fgets($handle, 4096);
