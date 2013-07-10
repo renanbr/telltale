@@ -50,7 +50,7 @@ class Telltale
     public function start()
     {
         // check if can start
-        if (self::$running && self::$running !== $this) {
+        if (static::$running && static::$running !== $this) {
             throw new \RuntimeException('There is another Telltale instance running.');
         }
         if ($this->started) {
@@ -58,7 +58,7 @@ class Telltale
         }
 
         // start agents
-        self::$running = $this;
+        static::$running = $this;
         $this->started = true;
         foreach ($this->agents as $agent) {
             $agent->start();
@@ -85,7 +85,7 @@ class Telltale
         }
 
         // analyse
-        self::$running = null;
+        static::$running = null;
         foreach ($this->agents as $agent) {
             $agent->analyse();
         }
