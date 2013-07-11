@@ -32,9 +32,10 @@ class MemoryPeakAgent extends AbstractTraceAgent
             $details = ' at ' . $call . '() in ' . $file . ' on line ' . $line;
         }
 
-        $report = new TextReport();
+        $report = $this->createReport();
         $report->setText('Memory peak ' . $memory . $details);
-        $report->spread();
+
+        return $report;
     }
 
     /**
@@ -79,5 +80,13 @@ class MemoryPeakAgent extends AbstractTraceAgent
         }
         fclose($handle);
         return array($peak, $call, $file, $line);
+    }
+
+    /**
+     * @return TextReport
+     */
+    protected function createReport()
+    {
+        return new TextReport();
     }
 }

@@ -26,7 +26,7 @@ class SlowestCallsAgent extends AbstractTraceCallsAgent
         $this->parse();
         $calls = array_slice($this->getSortedCalls('time-own'), 0, 5);
 
-        $report = new TableReport();
+        $report = $this->createReport();
         $report->setTitle('Slowest calls');
         $report->addRow(
             array(
@@ -59,6 +59,14 @@ class SlowestCallsAgent extends AbstractTraceCallsAgent
             );
         }
 
-        $report->spread();
+        return $report;
+    }
+
+    /**
+     * @return TableReport
+     */
+    protected function createReport()
+    {
+        return new TableReport();
     }
 }

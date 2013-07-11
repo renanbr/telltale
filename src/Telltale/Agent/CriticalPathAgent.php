@@ -36,12 +36,12 @@ class CriticalPathAgent extends AbstractTraceAgent
     {
         parent::analyse();
 
+        // calculate critical path
         $this->parse();
-
         $critical = array();
         $this->extract($this->tree, $critical);
 
-        $report = new TableReport();
+        $report = $this->createReport();
         $root = reset($critical);
         $time = Format::time($root['time']);
         $report->setTitle("Critical path ($time)");
@@ -72,12 +72,12 @@ class CriticalPathAgent extends AbstractTraceAgent
             );
         }
 
-        $report->spread();
+        return $report;
     }
 
     /**
      * @param array $list
-     * @param array $result
+     * @param array &$result
      */
     protected function extract(array $list, array &$result)
     {
@@ -159,5 +159,13 @@ class CriticalPathAgent extends AbstractTraceAgent
             $this->current['memory'] = $parts[4];
             $this->current = &$this->current['parent'];
         }
+    }
+
+    /**
+     * @return TableReport
+     */
+    protected function createReport()
+    {
+        return new TableReport();
     }
 }

@@ -26,7 +26,7 @@ class MemoryUsageCallsAgent extends AbstractTraceCallsAgent
         $this->parse();
         $calls = array_slice($this->getSortedCalls('memory-own'), 0, 5);
 
-        $report = new TableReport();
+        $report = $this->createReport();
         $report->setTitle('Top memory usage calls');
         $report->addRow(
             array(
@@ -59,6 +59,14 @@ class MemoryUsageCallsAgent extends AbstractTraceCallsAgent
             );
         }
 
-        $report->spread();
+        return $report;
+    }
+
+    /**
+     * @return TableReport
+     */
+    protected function createReport()
+    {
+        return new TableReport();
     }
 }

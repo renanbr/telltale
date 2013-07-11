@@ -28,11 +28,6 @@ class TableReport implements ReportInterface
     protected $rows = array();
 
     /**
-     * @var \Monolog\Logger
-     */
-    protected static $firePhpLogger;
-
-    /**
      * @param string $title
      * @return TableReport Provides a fluent interface
      */
@@ -57,25 +52,20 @@ class TableReport implements ReportInterface
      */
     public function spread()
     {
-        if (!$this->title || !$this->rows) {
-            return;
-        }
-        $this->spreadFirePhp();
+        $firePhpLogger = $this->createFirePhpLogger();
+        $firePhpContext = array('wildfire-table' => $this->rows);
+        $firePhpLogger->info($this->title, $firePhpContext);
     }
 
-    protected function spreadFirePhp()
+    /**
+     * @return Logger
+     */
+    protected function createFirePhpLogger()
     {
-        if (!static::$firePhpLogger) {
-            $logger = new Logger('Telltale');
-
-            $firePhpHandler = new FirePhpHandler();
-            $firePhpHandler->setFormatter(new WildfireTableFormatter());
-            $logger->pushHandler($firePhpHandler);
-
-            static::$firePhpLogger = $logger;
-        }
-
-        $context = array('wildfire-table' => $this->rows);
-        static::$firePhpLogger->info($this->title, $context);
+        $logger = new Logger('Telltale');
+        $handler = new FirePhpHandler();
+        $handler->setFormatter(new WildfireTableFormatter());
+        $logger->pushHandler($handler);
+        return $logger;
     }
 }

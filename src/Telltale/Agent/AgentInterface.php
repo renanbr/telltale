@@ -11,6 +11,8 @@
 
 namespace Telltale\Agent;
 
+use Telltale\Report\ReportInterface;
+
 interface AgentInterface
 {
     /**
@@ -30,6 +32,8 @@ interface AgentInterface
      * Performs analysis.
      *
      * Must be called after stop.
+     *
+     * @return ReportInterface
      */
     public function analyse();
 }

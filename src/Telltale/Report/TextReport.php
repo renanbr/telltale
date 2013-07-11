@@ -23,11 +23,6 @@ class TextReport implements ReportInterface
     protected $text;
 
     /**
-     * @var \Monolog\Logger
-     */
-    protected static $logger;
-
-    /**
      * @param string $text
      * @return TextReport Provides a fluent interface
      */
@@ -42,13 +37,18 @@ class TextReport implements ReportInterface
      */
     public function spread()
     {
-        if (!static::$logger) {
-            $logger = new Logger('Telltale');
-            $logger->pushHandler(new FirePhpHandler());
-            $logger->pushHandler(new ChromePHPHandler());
-            static::$logger = $logger;
-        }
+        $logger = $this->createLogger();
+        $logger->info($this->text);
+    }
 
-        static::$logger->info($this->text);
+    /**
+     * @return Logger
+     */
+    protected function createLogger()
+    {
+        $logger = new Logger('Telltale');
+        $logger->pushHandler(new FirePhpHandler());
+        $logger->pushHandler(new ChromePHPHandler());
+        return $logger;
     }
 }

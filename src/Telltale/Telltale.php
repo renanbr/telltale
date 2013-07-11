@@ -87,7 +87,8 @@ class Telltale
         // analyse
         static::$running = null;
         foreach ($this->agents as $agent) {
-            $agent->analyse();
+            $report = $agent->analyse();
+            $report->spread();
         }
     }
 
