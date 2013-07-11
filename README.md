@@ -72,6 +72,7 @@ or add `renanbr/telltale` to `composer.json` manually
 - [PHP](http://php.net) 5.3+
 - [Xdebug](http://xdebug.org/docs/install) 2.1+
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/firebug/) and [Firebug](https://addons.mozilla.org/en-US/firefox/addon/firephp/)
+- FirePHP
 
 ### Contributing
 
