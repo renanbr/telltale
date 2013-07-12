@@ -20,9 +20,9 @@ abstract class TraceFile
      */
     public static function open($file)
     {
-        $handle = fopen($file, 'r');
+        $handle = @fopen($file, 'r');
         if (!$handle) {
-            throw new \RuntimeException("Can't open '$file' trace file.");
+            throw new \RuntimeException('Can not open trace file given.');
         }
 
         $header1 = fgets($handle, 4096);
@@ -31,7 +31,7 @@ abstract class TraceFile
         if (!preg_match('@Version: 2.*@', $header1) ||
             !preg_match('@File format: 2@', $header2)
         ) {
-            throw new \RuntimeException("File '$file' is not an Xdebug trace file made with format option '1'.");
+            throw new \RuntimeException("File given is not an Xdebug trace file made with format option '2'.");
         }
 
         return $handle;

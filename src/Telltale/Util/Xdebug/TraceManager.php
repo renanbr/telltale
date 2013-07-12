@@ -21,6 +21,7 @@ class TraceManager
     /**
      * Returns the name of the file which is used to trace.
      *
+     * @throws \RuntimeException
      * @return string
      */
     public function start()

@@ -1,0 +1,13 @@
+<table class='xdebug-trace' dir='ltr' border='1' cellspacing='0'>
+    <tr><th>#</th><th>Time</th><th>Mem</th><th colspan='2'>Function</th><th>Location</th></tr>
+    <tr><td>5</td><td>0.089834</td><td align='right'>233872</td><td align='left'>&nbsp; &nbsp;-&gt;</td><td>group1_first()</td><td>/var/www/trace.php:36</td></tr>
+    <tr><td>6</td><td>0.090383</td><td align='right'>233904</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>group1_second()</td><td>/var/www/trace.php:12</td></tr>
+    <tr><td>7</td><td>0.090425</td><td align='right'>234080</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>str_repeat()</td><td>/var/www/trace.php:17</td></tr>
+    <tr><td>8</td><td>0.090485</td><td align='right'>233984</td><td align='left'>&nbsp; &nbsp;-&gt;</td><td>group2_first()</td><td>/var/www/trace.php:37</td></tr>
+    <tr><td>9</td><td>0.090526</td><td align='right'>234064</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>sleep()</td><td>/var/www/trace.php:23</td></tr>
+    <tr><td>10</td><td>2.090684</td><td align='right'>234064</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>group2_second()</td><td>/var/www/trace.php:24</td></tr>
+    <tr><td>11</td><td>2.090779</td><td align='right'>234144</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>sleep()</td><td>/var/www/trace.php:31</td></tr>
+    <tr><td>12</td><td>3.090965</td><td align='right'>234144</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>group1_second()</td><td>/var/www/trace.php:32</td></tr>
+    <tr><td>13</td><td>3.091050</td><td align='right'>234288</td><td align='left'>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;-&gt;</td><td>str_repeat()</td><td>/var/www/trace.php:17</td></tr>
+    <tr><td>14</td><td>3.091104</td><td align='right'>234048</td><td align='left'>&nbsp; &nbsp;-&gt;</td><td>xdebug_stop_trace()</td><td>/var/www/trace.php:39</td></tr>
+</table>

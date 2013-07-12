@@ -1,0 +1,26 @@
+Version: 2.2.1
+File format: 2
+TRACE START [2013-07-12 12:44:34]
+2	4	1	0.002250	231664
+2	5	0	0.002328	231488	thisIsA	1		/var/www/deep-path.php	38
+3	6	0	0.002364	231520	very	1		/var/www/deep-path.php	12
+4	7	0	0.002393	231656	sleep	0		/var/www/deep-path.php	17
+4	7	1	1.002591	231656
+4	8	0	1.002659	231560	deep	1		/var/www/deep-path.php	18
+5	9	0	1.002699	231696	sleep	0		/var/www/deep-path.php	23
+5	9	1	3.002835	231696
+5	10	0	3.002909	231600	critical	1		/var/www/deep-path.php	24
+6	11	0	3.002950	231736	sleep	0		/var/www/deep-path.php	29
+6	11	1	6.003154	231736
+6	12	0	6.003223	231640	path	1		/var/www/deep-path.php	30
+7	13	0	6.003263	231768	sleep	0		/var/www/deep-path.php	35
+7	13	1	10.003510	231768
+6	12	1	10.003602	231720
+5	10	1	10.003633	231720
+4	8	1	10.003656	231720
+3	6	1	10.003678	231720
+2	5	1	10.003707	231720
+1	0	1	10.003733	231720
+			10.004539	8616
+TRACE END   [2013-07-12 12:44:44]
+

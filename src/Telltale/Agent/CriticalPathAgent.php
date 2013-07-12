@@ -62,7 +62,7 @@ class CriticalPathAgent extends AbstractTraceAgent
             $report->addRow(
                 array(
                     (string) $position,
-                    $name,
+                    trim($name),
                     Format::time($call['time']),
                     Format::bytes($call['memory']),
                     $call['file'],

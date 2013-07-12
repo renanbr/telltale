@@ -43,7 +43,7 @@ abstract class AbstractAgent implements AgentInterface
     public function stop()
     {
         if (!$this->started) {
-            throw new \RuntimeException('Telltale Agent was not started.');
+            throw new \RuntimeException('Can not stop Telltale Agent, it was not started.');
         }
         if ($this->stopped) {
             throw new \RuntimeException('Telltale Agent is already stopped.');
@@ -57,7 +57,7 @@ abstract class AbstractAgent implements AgentInterface
     public function analyse()
     {
         if (!$this->started) {
-            throw new \RuntimeException('Telltale Agent was not started.');
+            throw new \RuntimeException('Telltale Agent can not analyse, it was not started.');
         }
         if (!$this->stopped) {
             $this->stop();

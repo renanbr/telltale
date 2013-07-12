@@ -21,7 +21,7 @@ abstract class Format
     {
         $factor = $bytes < 0 ? -1 : 1;
         $value = abs($bytes);
-        $prefixes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $prefixes = array('B', 'kB', 'MB', 'GB');
         foreach ($prefixes as $prefix) {
             if ($value < 1024) {
                 break;

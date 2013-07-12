@@ -1,0 +1,26 @@
+Version: 2.2.1
+File format: 2
+TRACE START [2013-07-11 20:48:34]
+2	4	1	0.017275	234008
+2	5	0	0.017299	233872	group1_first	1		/var/www/trace.php	36
+3	6	0	0.017308	233904	group1_second	1		/var/www/trace.php	12
+4	7	0	0.017316	234080	str_repeat	0		/var/www/trace.php	17
+4	7	1	0.017326	240272
+3	6	1	0.017331	233984
+2	5	1	0.034136	233984
+2	8	0	0.034185	233984	group2_first	1		/var/www/trace.php	37
+3	9	0	0.034204	234064	sleep	0		/var/www/trace.php	23
+3	9	1	2.034303	234064
+3	10	0	2.034351	234064	group2_second	1		/var/www/trace.php	24
+4	11	0	2.034365	234144	sleep	0		/var/www/trace.php	31
+4	11	1	3.034479	234144
+4	12	0	3.034567	234144	group1_second	1		/var/www/trace.php	32
+5	13	0	3.034606	234288	str_repeat	0		/var/www/trace.php	17
+5	13	1	3.034646	240480
+4	12	1	3.034668	234192
+3	10	1	3.034700	234144
+2	8	1	3.034726	234096
+2	14	0	3.034750	234048	xdebug_stop_trace	0		/var/www/trace.php	39
+			3.034777	234088
+TRACE END   [2013-07-11 20:48:37]
+
