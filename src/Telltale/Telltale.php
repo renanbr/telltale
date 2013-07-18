@@ -98,12 +98,13 @@ class Telltale
         }
 
         // analyse
-        static::$running = null;
         foreach ($this->agents as $agent) {
             $report = $agent->analyse();
             $report->setContext($this->name);
             $report->spread();
         }
+
+        static::$running = null;
     }
 
     /**
