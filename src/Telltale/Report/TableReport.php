@@ -20,6 +20,11 @@ class TableReport implements ReportInterface
     /**
      * @var string
      */
+    protected $context;
+
+    /**
+     * @var string
+     */
     protected $title;
 
     /**
@@ -48,6 +53,14 @@ class TableReport implements ReportInterface
     }
 
     /**
+     * @param string $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function spread()
@@ -62,7 +75,11 @@ class TableReport implements ReportInterface
      */
     protected function createFirePhpLogger()
     {
-        $logger = new Logger('Telltale');
+        $name = 'Telltale';
+        if ($this->context) {
+            $name .= ' [' . $this->context . ']';
+        }
+        $logger = new Logger($name);
         $handler = new FirePhpHandler();
         $handler->setFormatter(new WildfireTableFormatter());
         $logger->pushHandler($handler);

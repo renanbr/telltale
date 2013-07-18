@@ -37,6 +37,19 @@ class Telltale
      */
     protected $stopped = false;
 
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @param string $name
+     */
+    public function __construct($name = null)
+    {
+        $this->name = $name;
+    }
+
     public function __destruct()
     {
         if ($this->started && !$this->stopped) {
@@ -88,6 +101,7 @@ class Telltale
         static::$running = null;
         foreach ($this->agents as $agent) {
             $report = $agent->analyse();
+            $report->setContext($this->name);
             $report->spread();
         }
     }

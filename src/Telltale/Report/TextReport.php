@@ -14,9 +14,14 @@ namespace Telltale\Report;
 use Monolog\Logger;
 use Telltale\Util\Monolog\Handler\FirePhpHandler;
 use Monolog\Handler\ChromePHPHandler;
+use Telltale\Context\ContextInterface;
 
 class TextReport implements ReportInterface
 {
+    /**
+     * @var ContextInterface
+     */
+    protected $context;
     /**
      * @var string
      */
@@ -33,6 +38,14 @@ class TextReport implements ReportInterface
     }
 
     /**
+     * @param string $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function spread()
@@ -46,7 +59,11 @@ class TextReport implements ReportInterface
      */
     protected function createLogger()
     {
-        $logger = new Logger('Telltale');
+        $name = 'Telltale';
+        if ($this->context) {
+            $name .= ' [' . $this->context . ']';
+        }
+        $logger = new Logger($name);
         $logger->pushHandler(new FirePhpHandler());
         $logger->pushHandler(new ChromePHPHandler());
         return $logger;

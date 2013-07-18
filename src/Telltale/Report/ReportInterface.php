@@ -14,6 +14,11 @@ namespace Telltale\Report;
 interface ReportInterface
 {
     /**
+     * @param string $context
+     */
+    public function setContext($context);
+
+    /**
      * Send report to endpoint.
      */
     public function spread();
