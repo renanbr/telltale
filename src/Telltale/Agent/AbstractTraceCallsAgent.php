@@ -46,20 +46,24 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
      *
      * Structure:
      *     array(
-     *         'name'             => integer,
-     *         'is-internal'      => boolean,
-     *         'times'            => integer,
-     *         'time-inclusive'   => integer,
-     *         'time-children'    => integer,
-     *         'time-own'         => integer,
-     *         'memory-inclusive' => integer,
-     *         'memory-children'  => integer,
-     *         'memory-own'       => integer
+     *         'file-path' => array(
+     *             array(
+     *                 'name'             => integer,
+     *                 'is-internal'      => boolean,
+     *                 'times'            => integer,
+     *                 'time-inclusive'   => integer,
+     *                 'time-children'    => integer,
+     *                 'time-own'         => integer,
+     *                 'memory-inclusive' => integer,
+     *                 'memory-children'  => integer,
+     *                 'memory-own'       => integer
+     *             )
+     *         )
      *     )
      *
      * @var array
      */
-    protected $calls = array();
+    protected static $calls = array();
 
     /**
      * Used to remove unwanted executions from statistics, specially internal
@@ -75,7 +79,7 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
      */
     protected function getSortedCalls($key)
     {
-        $result = $this->calls;
+        $result = self::$calls[$this->traceFile];
         uasort(
             $result,
             function ($call1, $call2) use ($key) {
@@ -90,6 +94,11 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
 
     protected function parse()
     {
+        if (isset(self::$calls[$this->traceFile])) {
+            return;
+        }
+        self::$calls[$this->traceFile] = array();
+
         $handle = TraceFile::open($this->traceFile);
         while (!feof($handle)) {
             $line = fgets($handle, 4096);
@@ -105,7 +114,7 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
         fclose($handle);
 
         // calculate own time, and own memory
-        foreach ($this->calls as &$call) {
+        foreach (self::$calls[$this->traceFile] as &$call) {
             $call['time-own'] = $call['time-inclusive'] - $call['time-children'];
             $call['memory-own'] = $call['memory-inclusive'] - $call['memory-children'];
         }
@@ -226,8 +235,8 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
     protected function saveCall(array $entry)
     {
         $name = $entry['name'];
-        if (!isset($this->calls[$name])) {
-            $this->calls[$name] = array(
+        if (!isset(self::$calls[$this->traceFile][$name])) {
+            self::$calls[$this->traceFile][$name] = array(
                 'times'            => 0,
                 'is-internal'      => $entry['is-internal'],
                 'time-inclusive'   => 0,
@@ -237,7 +246,7 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
             );
         }
 
-        $call = &$this->calls[$name];
+        $call = &self::$calls[$this->traceFile][$name];
         $call['times']++;
         $call['time-inclusive'] += $entry['time-exit'] - $entry['time-entry'];
         $call['time-children'] += $entry['time-children'];

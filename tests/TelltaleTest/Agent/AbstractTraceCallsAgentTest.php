@@ -29,9 +29,9 @@ class AbstractTraceCallsAgentTest extends \PHPUnit_Framework_TestCase
         $parseMethod->setAccessible(true);
         $parseMethod->invoke($agent);
 
-        $callsAttr = $reflection->getProperty('calls');
-        $callsAttr->setAccessible(true);
-        $calls = $callsAttr->getValue($agent);
+        $getMethod = $reflection->getMethod('getSortedCalls');
+        $getMethod->setAccessible(true);
+        $calls = $getMethod->invoke($agent, 'times');
 
         $this->assertCount(6, $calls);
     }
