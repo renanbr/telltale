@@ -14,6 +14,8 @@ namespace Telltale\Report;
 use Monolog\Logger;
 use Telltale\Util\Monolog\Handler\FirePhpHandler;
 use Telltale\Util\Monolog\Formatter\WildfireTableFormatter;
+use Monolog\Handler\ChromePHPHandler;
+use Telltale\Util\Monolog\Formatter\ChromePhpTableFormatter;
 
 class TableReport implements ReportInterface
 {
@@ -65,24 +67,30 @@ class TableReport implements ReportInterface
      */
     public function spread()
     {
-        $firePhpLogger = $this->createFirePhpLogger();
-        $firePhpContext = array('wildfire-table' => $this->rows);
-        $firePhpLogger->info($this->title, $firePhpContext);
+        $logger = $this->createLogger();
+        $context = array('telltale-table' => $this->rows);
+        $logger->info($this->title, $context);
     }
 
     /**
      * @return Logger
      */
-    protected function createFirePhpLogger()
+    protected function createLogger()
     {
         $name = 'Telltale';
         if ($this->context) {
             $name .= ' [' . $this->context . ']';
         }
         $logger = new Logger($name);
-        $handler = new FirePhpHandler();
-        $handler->setFormatter(new WildfireTableFormatter());
-        $logger->pushHandler($handler);
+
+        $firePhp = new FirePhpHandler();
+        $firePhp->setFormatter(new WildfireTableFormatter());
+        $logger->pushHandler($firePhp);
+
+        $chromePhp = new ChromePHPHandler();
+        $chromePhp->setFormatter(new ChromePhpTableFormatter());
+        $logger->pushHandler($chromePhp);
+
         return $logger;
     }
 }

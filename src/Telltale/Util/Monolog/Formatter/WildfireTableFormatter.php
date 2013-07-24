@@ -20,8 +20,8 @@ class WildfireTableFormatter extends WildfireFormatter
      */
     public function format(array $record)
     {
-        if (!isset($record['context']['wildfire-table']) ||
-            !is_array($record['context']['wildfire-table'])
+        if (!isset($record['context']['telltale-table']) ||
+            !is_array($record['context']['telltale-table'])
         ) {
             return parent::format($record);
         }
@@ -32,7 +32,7 @@ class WildfireTableFormatter extends WildfireFormatter
         $file = isset($record['extra']['file']) ? $record['extra']['file'] : '';
         $line = isset($record['extra']['line']) ? $record['extra']['line'] : '';
         $label = $record['channel'] . ': ' . $record['message'];
-        $message = $record['context']['wildfire-table'];
+        $message = $record['context']['telltale-table'];
         $handleError = false;
 
         $json = $this->toJson(

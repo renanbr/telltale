@@ -11,31 +11,36 @@
 
 namespace TelltaleTest\Util\Monolog\Formatter;
 
-use Telltale\Util\Monolog\Formatter\WildfireTableFormatter;
+use Telltale\Util\Monolog\Formatter\ChromePhpTableFormatter;
 use Monolog\Logger;
-use Monolog\Formatter\WildfireFormatter;
+use Monolog\Formatter\ChromePHPFormatter;
 
 /**
- * @cover Telltale\Util\Monolog\Formatter\WildfireTableFormatter
+ * @cover Telltale\Util\Monolog\Formatter\ChromePhpTableFormatter
  */
-class WildfireTableFormatterTest extends \PHPUnit_Framework_TestCase
+class ChromePhpTableFormatterTest extends \PHPUnit_Framework_TestCase
 {
+
     public function testDefaultFormat()
     {
         $record = array(
             'level' => Logger::ERROR,
             'level_name' => 'ERROR',
             'channel' => 'meh',
-            'context' => array('from' => 'logger'),
+            'context' => array(
+                'from' => 'logger'
+            ),
             'datetime' => new \DateTime("@0"),
-            'extra' => array('ip' => '127.0.0.1'),
-            'message' => 'log',
+            'extra' => array(
+                'ip' => '127.0.0.1'
+            ),
+            'message' => 'log'
         );
 
-        $monologFormatter = new WildfireFormatter();
+        $monologFormatter = new ChromePHPFormatter();
         $monologResult = $monologFormatter->format($record);
 
-        $telltaleFormatter = new WildfireTableFormatter();
+        $telltaleFormatter = new ChromePhpTableFormatter();
         $telltaleResult = $telltaleFormatter->format($record);
 
         $this->assertEquals($monologResult, $telltaleResult);
@@ -50,19 +55,27 @@ class WildfireTableFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array(
                 'from' => 'logger',
                 'telltale-table' => array(
-                    array('cell-0-0', 'cell-0-1'),
-                    array('cell-1-0', 'cell-1-1'),
-                ),
+                    array(
+                        'cell-0-0',
+                        'cell-0-1'
+                    ),
+                    array(
+                        'cell-1-0',
+                        'cell-1-1'
+                    )
+                )
             ),
             'datetime' => new \DateTime("@0"),
-            'extra' => array('ip' => '127.0.0.1'),
-            'message' => 'log',
+            'extra' => array(
+                'ip' => '127.0.0.1'
+            ),
+            'message' => 'log'
         );
 
-        $monologFormatter = new WildfireFormatter();
+        $monologFormatter = new ChromePHPFormatter();
         $monologResult = $monologFormatter->format($record);
 
-        $telltaleFormatter = new WildfireTableFormatter();
+        $telltaleFormatter = new ChromePhpTableFormatter();
         $telltaleResult = $telltaleFormatter->format($record);
 
         $this->assertNotEquals($monologResult, $telltaleResult);
@@ -77,20 +90,31 @@ class WildfireTableFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array(
                 'from' => 'logger',
                 'telltale-table' => array(
-                    array('cell-a-0', 'cell-a-1'),
-                    array('cell-b-0', 'cell-b-1'),
-                ),
+                    array(
+                        'cell-a-0',
+                        'cell-a-1'
+                    ),
+                    array(
+                        'cell-b-0',
+                        'cell-b-1'
+                    )
+                )
             ),
             'datetime' => new \DateTime("@0"),
-            'extra' => array('ip' => '127.0.0.1'),
-            'message' => 'log',
+            'extra' => array(
+                'ip' => '127.0.0.1'
+            ),
+            'message' => 'log'
         );
 
-        $formatter = new WildfireTableFormatter();
+        $formatter = new ChromePhpTableFormatter();
         $result = $formatter->format($record);
-        $expected = '107|[{"Type":"TABLE","File":"","Line":"","Label":"meh: log"},'
-                  . '[["cell-a-0","cell-a-1"],["cell-b-0","cell-b-1"]]]|';
 
-        $this->assertEquals($expected, $result);
+        $this->assertNull($result[0]);
+
+        // removes first row, it is used as table header
+        $table = $result[1];
+        array_shift($table);
+        $this->assertEquals($table, $record['context']['telltale-table']);
     }
 }

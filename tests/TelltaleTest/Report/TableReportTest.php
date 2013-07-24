@@ -25,15 +25,23 @@ class TableReportTest extends \PHPUnit_Framework_TestCase
         $report->addRow(array('cell 0', 'cell 1'));
 
         $reflection = new \ReflectionClass($report);
-        $method = $reflection->getMethod('createFirePhpLogger');
+        $method = $reflection->getMethod('createLogger');
         $method->setAccessible(true);
 
         $logger = $method->invoke($report);
+
+        $chromePhpHandler = $logger->popHandler();
+        $chromePhpFormatter = $chromePhpHandler->getFormatter();
+        $this->assertInstanceOf(
+            'Telltale\\Util\\Monolog\\Formatter\\ChromePhpTableFormatter',
+            $chromePhpFormatter
+        );
+
         $firePhpHandler = $logger->popHandler();
-        $formatter = $firePhpHandler->getFormatter();
+        $firePhpFormatter = $firePhpHandler->getFormatter();
         $this->assertInstanceOf(
             'Telltale\\Util\\Monolog\\Formatter\\WildfireTableFormatter',
-            $formatter
+            $firePhpFormatter
         );
     }
 
@@ -53,16 +61,16 @@ class TableReportTest extends \PHPUnit_Framework_TestCase
             ->method('info')
             ->with(
                 $this->identicalTo($title),
-                $this->identicalTo(array('wildfire-table' => $table))
+                $this->identicalTo(array('telltale-table' => $table))
             );
 
         $report = $this->getMock(
             'Telltale\\Report\\TableReport',
-            array('createFirePhpLogger')
+            array('createLogger')
         );
         $report
             ->expects($this->once())
-            ->method('createFirePhpLogger')
+            ->method('createLogger')
             ->will($this->returnValue($logger));
 
         $report->setTitle($title);
