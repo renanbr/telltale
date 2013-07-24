@@ -51,8 +51,8 @@ factorial(10);
 
 function highMemory()
 {
-    str_repeat('elatlleT', 123456);
-    str_repeat('Telltale', 654321);
+    str_repeat('elatlleT', rand(1111, 99999));
+    str_repeat('Telltale', rand(1111, 99999));
 }
 
 highMemory();
@@ -62,16 +62,16 @@ highMemory();
 function foo($seconds)
 {
     if ($seconds > 0) {
-        sleep($seconds);
+        sleep(rand($seconds - 1, $seconds + 1));
         bar($seconds - 1);
     }
 }
 
 function bar($seconds)
 {
-    $bar = str_repeat('telltale', 1234);
+    $bar = str_repeat('telltale', rand(1111, 99999));
     if ($seconds > 0) {
-        sleep($seconds);
+        sleep(rand($seconds - 1, $seconds + 1));
         foo($seconds - 1);
     }
 }
