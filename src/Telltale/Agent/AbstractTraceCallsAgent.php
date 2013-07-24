@@ -48,7 +48,6 @@ abstract class AbstractTraceCallsAgent extends AbstractTraceAgent
      *     array(
      *         'file-path' => array(
      *             array(
-     *                 'name'             => integer,
      *                 'is-internal'      => boolean,
      *                 'times'            => integer,
      *                 'time-inclusive'   => integer,
