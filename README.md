@@ -1,18 +1,19 @@
-# Telltale
-
+# Telltale [![Build Status](https://secure.travis-ci.org/renanbr/telltale.png)](http://travis-ci.org/renanbr/telltale) [![Dependency Status](https://www.versioneye.com/user/projects/51efce5a632bac469902904d/badge.png)](https://www.versioneye.com/user/projects/51efce5a632bac469902904d)
 __Statistics that help you improve application performance.__
 
 _Telltale_ analyses current execution and provides information about potential
 bottlenecks in your application. Analyzes are executed by _agents_. Output
-reports are automatically sent to console of your browser. Default _agents_:
+reports are automatically sent to console of your browser. Available _agents_:
 
-- __MemoryPeakAgent__: top memory usage;
-- __CriticalPathAgent__: shows the most time-consuming path;
-- __SlowestCallsCallsAgent__: shows slowest calls;
-- __MemoryUsageCallsAgent__: shows top memory usage calls.
+- Memory Peak;
+- Critical Patht;
+- Slowest Calls;
+- Memory Usage Calls.
+
+## Screenshot
 
 <p align="center">
-![](https://raw.github.com/renanbr/telltale/master/docs/images/screenshot/overview.png)
+![width=0.5](https://raw.github.com/renanbr/telltale/master/docs/images/screenshot/overview.png)
 <p>
 
 ## Usage
@@ -53,26 +54,21 @@ $telltale->stop();
 
 Installation of this module uses [Composer](http://getcomposer.org/).
 
-```sh
-php composer.phar require renanbr/telltale:dev-master
-```
-or add `renanbr/telltale` to `composer.json` manually
 ``` json
 {
     "require": {
-        "renanbr/telltale": "dev-master"
+        "renanbr/telltale": "1.0.*"
     }
 }
 ```
-
-## About
 
 ### Requirements
 
 - [PHP](http://php.net) 5.3+
 - [Xdebug](http://xdebug.org/docs/install) 2.1+
-- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/firebug/) and [Firebug](https://addons.mozilla.org/en-US/firefox/addon/firephp/)
-- FirePHP
+- [FirePHP](https://addons.mozilla.org/en-US/firefox/addon/firephp/) for [Firefox](http://www.mozilla.org/en-US/firefox/new/) (or [ChromeLogger](https://chrome.google.com/webstore/detail/chrome-logger/noaneddfkdjfnfdakjjmocngnfkfehhd) for [Chrome](https://google.com/chrome))
+
+## About
 
 ### Contributing
 
