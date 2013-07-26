@@ -14,11 +14,18 @@ namespace TelltaleTest;
 use Telltale\Telltale;
 
 /**
- * @backupStaticAttributes enabled
  * @covers Telltale\Telltale
  */
 class TelltaleTest extends \PHPUnit_Framework_TestCase
 {
+    protected function tearDown()
+    {
+        $reflection = new \ReflectionClass(new Telltale());
+        $attribute = $reflection->getProperty('running');
+        $attribute->setAccessible(true);
+        $attribute->setValue(null);
+    }
+
     /**
      * @expectedException RuntimeException
      * @expectedExceptionMessage Telltale instance can not be started twice.
